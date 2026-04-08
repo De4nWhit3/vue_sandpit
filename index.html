@@ -1,3 +1,5 @@
+<!-- for, keys of map , if, else if, else, mouse event, event data, reactive, ref, once , form-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +8,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <title>Document</title>
+    <style>
+        #block {
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
-        <h1>{{user.age}}</h1>
+
+        <form v-on:submit.prevent="updateYear">
+            <input />
+            <input type="text" v-on:keyup.d.space.enter="showEvent" />
+            <button type="submit">Submit</button>
+        </form>
+
+        <h1>{{coord.x}} and {{coord.y}}</h1>
+        <div id="block" v-on:mousemove="updateCoord">
+
+        </div>
+
+        <h1 v-once> {{ year }}</h1>
+        <h1> {{ year }}</h1>
+
+        <!-- {{ updateYear() }} -->
+        <h1>{{ name }}</h1>
+        <ul>
+            <li v-for="name in arr">{{ name }}</li>
+        </ul>
+        <ul>
+            <li v-for="(name, key) in student">{{ key }} : {{ name }}</li>
+        </ul>
     </div>
 </body>
 <script>
@@ -18,17 +49,36 @@
 
     createApp({
         setup() {
-            let user = reactive({ age: 10 });
 
-            setTimeout(
-                () => {
-                    user.age = 33;
-                }, 2000
-            );
+            function showEvent(event) {
+                console.log(event.target.value);
+            }
 
-            return { user };
+            let coord = reactive({ x: 0, y: 0 });
+
+            function updateCoord(event) {
+                coord.x = event.clientX;
+                coord.y = event.clientY;
+            }
+
+            let year = ref(2026);
+            const name = 'Rose';
+            const arr = ['Kade', 'Dean', 'Clark'];
+            const student = {
+                name: 'Charlotte',
+                course: 'Doctor'
+            };
+
+            function updateYear() {
+                year.value = 2027;
+                // setTimeout(() => {
+                //     year.value = 2027;
+                // }, 1);
+            }
+
+            return { name, arr, student, year, updateYear, coord, updateCoord, showEvent };
         }
-    }).mount("#app");
+    }).mount('#app');
 </script>
 
 </html>
