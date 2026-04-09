@@ -20,9 +20,15 @@
             background: red;
         }
 
+
+        .yellow {
+            background: yellow;
+        }
+
         .green {
             background: green;
         }
+
 
         .large {
             font-size: 40px;
@@ -33,6 +39,14 @@
 
 <body>
     <div id="app">
+        <div class="element" v-bind:class="[
+            shades.yellowClass.active ? shades.yellowClass.name : '',
+            shades.greenClass.active ? shades.greenClass.name : ''
+        ]">This is my content</div>
+        <div v-on:click="shades.greenClass.active = !shades.greenClass.active" v-bind:style="shades.newStyle">
+            Activate Green
+        </div>
+
         <div class="element" v-bind:class="{red: redColor, large: true}" v-on:click="redColor = !redColor">This is my
             content</div>
 
@@ -70,7 +84,20 @@
 
     createApp({
         setup() {
-
+            const shades = ref({
+                yellowClass: {
+                    name: 'yellow',
+                    active: true
+                },
+                greenClass: {
+                    name: 'green',
+                    active: false
+                },
+                newStyle: {
+                    fontSize: '70px',
+                    border: '5px solid purple'
+                }
+            });
 
             const redColor = ref(false);
 
@@ -90,7 +117,7 @@
                 console.log(formData);
             }
 
-            return { formData, formHandler, redColor, colors };
+            return { formData, formHandler, redColor, colors, shades };
         }
 
     }).mount('#app');
