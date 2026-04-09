@@ -5,11 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .element {
+            color: white;
+            background-color: black;
+            padding: 10px;
+        }
+
+        .blue {
+            background: blue;
+        }
+
+        .red {
+            background: red;
+        }
+
+        .green {
+            background: green;
+        }
+
+        .large {
+            font-size: 40px;
+        }
+    </style>
     <title>Document</title>
 </head>
 
 <body>
     <div id="app">
+        <div class="element" v-bind:class="{red: redColor, large: true}" v-on:click="redColor = !redColor">This is my
+            content</div>
+
+        <div class="element" v-bind:class="colors">This is my content</div>
+        <div v-on:click="colors.red = !colors.red">
+            Activate Red
+        </div>
+
         <form v-on:submit.prevent="formHandler">
             <label>name:</label>
             <input type="text" v-model.trim="formData.name">
@@ -39,6 +70,15 @@
 
     createApp({
         setup() {
+
+
+            const redColor = ref(false);
+
+            const colors = ref({
+                blue: true,
+                red: false
+            });
+
             const formData = ref({
                 name: '',
                 surname: '',
@@ -50,7 +90,7 @@
                 console.log(formData);
             }
 
-            return { formData, formHandler };
+            return { formData, formHandler, redColor, colors };
         }
 
     }).mount('#app');
