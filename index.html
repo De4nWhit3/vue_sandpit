@@ -19,31 +19,39 @@
         .blue {
             background: blue;
         }
+
+        #block {
+            height: 200px;
+            width: 200px;
+            border: 2px solid black;
+        }
+
+        .btn {
+            height: 100px;
+            width: 200px;
+            border: 2px solid black;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
     <div id="app">
-        <form v-on:submit.prevent="handleForm">
-            <label>Name</label>
-            <input type="text" v-model="formData.name" />
-            <hr />
+        <div id="block" v-bind:class="[
+            colors.redClass.active ? 'red': '',
+            colors.greenClass.active ? 'green' : '',
+            colors.blueClass.active ? 'blue' : ''
+        ]">
 
-            <label>Surname</label>
-            <input type="text" v-model="formData.surname" />
-            <hr />
-
-            <label>Age</label>
-            <input v-model.number="formData.age" />
-            <hr />
-
-            <label>Awake</label>
-            <input type="checkbox" v-model="formData.awake" />
-            <h1>{{formData.awake}}</h1>
-            <hr />
-
-            <button type="submit">Submit</button>
-        </form>
+        </div>
+        <hr />
+        <div class="btn" v-on:click="toggleColor">
+            TOGGLE COLOR
+        </div>
+        <hr />
+        <div class="btn" v-on:click="makeBlue">
+            MAKE BLUE
+        </div>
     </div>
 </body>
 <script>
@@ -51,18 +59,31 @@
 
     createApp({
         setup() {
-            let formData = ref({
-                name: '',
-                surname: '',
-                age: '',
-                awake: false
+            let colors = ref({
+                redClass: {
+                    name: 'red',
+                    active: true
+                },
+                greenClass: {
+                    name: 'green',
+                    active: 'false'
+                },
+                blueClass: {
+                    name: 'blue',
+                    active: false
+                }
             });
 
-            function handleForm() {
-                console.log(formData.value);
+            function toggleColor() {
+                colors.value.blueClass.active = false;
+                colors.value.greenClass.active = !colors.value.greenClass.active;
             }
 
-            return { formData, handleForm };
+            function makeBlue() {
+                colors.value.blueClass.active = true;
+            }
+
+            return { colors, toggleColor, makeBlue };
         }
     }
     ).mount('#app');
