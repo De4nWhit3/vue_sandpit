@@ -10,18 +10,22 @@
 
 <body>
     <div id="app">
-        <h1>{{count}}</h1>
-        <button v-on:click="count++">INCREMENT</button>
+        <h1>{{count.number}}</h1>
+        <button v-on:click="count.number++">INCREMENT</button>
     </div>
 </body>
 <script>
-    const { createApp, ref, watch } = Vue;
+    const { createApp, ref, watch, reactive } = Vue;
 
     createApp({
         setup() {
-            let count = ref(0);
+            let count = reactive({
+                number: 0,
+                other: 'other'
+            });
 
-            watch(count, (newCount, oldCount) => {
+            // callback/getter to get number from 'complex' object
+            watch(() => [count.number, count.other], (newCount, oldCount) => {
                 console.log(`New: ${newCount}, Old: ${oldCount}`);
             });
 
