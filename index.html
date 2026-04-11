@@ -1,4 +1,3 @@
-<!-- TODO: FORMDATA -> CONSOLE.LOG + CHECK BUTTON TOGGLE + STYLE SWAP -> ON CLICK -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,86 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <title>Document</title>
-    <style>
-        .red {
-            background: red;
-        }
-
-        .green {
-            background: green;
-        }
-
-        .blue {
-            background: blue;
-        }
-
-        #block {
-            height: 200px;
-            width: 200px;
-            border: 2px solid black;
-        }
-
-        .btn {
-            height: 100px;
-            width: 200px;
-            border: 2px solid black;
-            cursor: pointer;
-        }
-    </style>
 </head>
 
 <body>
     <div id="app">
-        <div id="block" v-bind:class="[
-            colors.redClass.active ? 'red': '',
-            colors.greenClass.active ? 'green' : '',
-            colors.blueClass.active ? 'blue' : ''
-        ]">
+        <label>
+            Name
+        </label>
+        <input v-model="userData.name" type="text">
+        <button v-on:click="toggleActive">Toggle Active</button>
+        <hr />
+        {{ message }}
+        {{ isActive }}
 
-        </div>
-        <hr />
-        <div class="btn" v-on:click="toggleColor">
-            TOGGLE COLOR
-        </div>
-        <hr />
-        <div class="btn" v-on:click="makeBlue">
-            MAKE BLUE
-        </div>
     </div>
 </body>
 <script>
-    const { createApp, ref } = Vue;
+    const { createApp, ref, computed } = Vue;
 
     createApp({
         setup() {
-            let colors = ref({
-                redClass: {
-                    name: 'red',
-                    active: true
-                },
-                greenClass: {
-                    name: 'green',
-                    active: 'false'
-                },
-                blueClass: {
-                    name: 'blue',
-                    active: false
-                }
+            let userData = ref({
+                name: '',
+                active: false,
             });
 
-            function toggleColor() {
-                colors.value.blueClass.active = false;
-                colors.value.greenClass.active = !colors.value.greenClass.active;
+            const message = computed(() => {
+                console.log('GET MESSAGE');
+                return userData.value.name === 'dean' ? 'Hello Dean!' : 'Not Allowed';
+            });
+
+            const isActive = computed(() => {
+                return userData.value.active ? 'Active' : 'Not Active';
+            });
+
+
+            function toggleActive() {
+                console.log('TOGGLE ACTIVE');
+                userData.value.active = !userData.value.active;
             }
 
-            function makeBlue() {
-                colors.value.blueClass.active = true;
-            }
 
-            return { colors, toggleColor, makeBlue };
+            return { userData, toggleActive, message, isActive };
         }
-    }
-    ).mount('#app');
+    }).mount('#app');
 </script>
 
 </html>
