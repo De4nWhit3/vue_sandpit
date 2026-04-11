@@ -1,3 +1,4 @@
+<!-- TODO: FORMDATA -> CONSOLE.LOG + CHECK BUTTON TOGGLE + STYLE SWAP -> ON CLICK -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,77 +6,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
     <style>
-        .element {
-            color: white;
-            background-color: black;
-            padding: 10px;
-        }
-
-        .blue {
-            background: blue;
-        }
-
         .red {
             background: red;
-        }
-
-
-        .yellow {
-            background: yellow;
         }
 
         .green {
             background: green;
         }
 
-
-        .large {
-            font-size: 40px;
+        .blue {
+            background: blue;
         }
     </style>
-    <title>Document</title>
 </head>
 
 <body>
     <div id="app">
-        <div class="element" v-bind:class="[
-            shades.yellowClass.active ? shades.yellowClass.name : '',
-            shades.greenClass.active ? shades.greenClass.name : ''
-        ]">This is my content</div>
-        <div v-on:click="shades.greenClass.active = !shades.greenClass.active" v-bind:style="shades.newStyle">
-            Activate Green
-        </div>
-
-        <div class="element" v-bind:class="{red: redColor, large: true}" v-on:click="redColor = !redColor">This is my
-            content</div>
-
-        <div class="element" v-bind:class="colors">This is my content</div>
-        <div v-on:click="colors.red = !colors.red">
-            Activate Red
-        </div>
-
-        <form v-on:submit.prevent="formHandler">
-            <label>name:</label>
-            <input type="text" v-model.trim="formData.name">
+        <form v-on:submit.prevent="handleForm">
+            <label>Name</label>
+            <input type="text" v-model="formData.name" />
             <hr />
 
-            <label>surname:</label>
-            <input type="text" v-model.trim="formData.surname">
+            <label>Surname</label>
+            <input type="text" v-model="formData.surname" />
             <hr />
 
-            <label>age:</label>
-            <input type="text" v-model.number="formData.age">
-
+            <label>Age</label>
+            <input v-model.number="formData.age" />
             <hr />
 
-            <label>checked:</label>
-            <input type="checkbox" v-model="formData.checked">
-            <h3>{{formData.checked}}</h3>
+            <label>Awake</label>
+            <input type="checkbox" v-model="formData.awake" />
+            <h1>{{formData.awake}}</h1>
+            <hr />
 
-            <button type="submit">
-                SUBMIT
-            </button>
+            <button type="submit">Submit</button>
         </form>
     </div>
 </body>
@@ -84,43 +51,21 @@
 
     createApp({
         setup() {
-            const shades = ref({
-                yellowClass: {
-                    name: 'yellow',
-                    active: true
-                },
-                greenClass: {
-                    name: 'green',
-                    active: false
-                },
-                newStyle: {
-                    fontSize: '70px',
-                    border: '5px solid purple'
-                }
-            });
-
-            const redColor = ref(false);
-
-            const colors = ref({
-                blue: true,
-                red: false
-            });
-
-            const formData = ref({
+            let formData = ref({
                 name: '',
                 surname: '',
                 age: '',
-                checked: false
+                awake: false
             });
 
-            function formHandler() {
-                console.log(formData);
+            function handleForm() {
+                console.log(formData.value);
             }
 
-            return { formData, formHandler, redColor, colors, shades };
+            return { formData, handleForm };
         }
-
-    }).mount('#app');
+    }
+    ).mount('#app');
 </script>
 
 </html>
